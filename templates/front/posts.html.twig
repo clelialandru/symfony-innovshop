@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page actualités{% endblock %}
+
+{% block body %}
+<main>
+    <h1>Actualités</h1>
+    {{ component('CategoryMenuArticle') }}
+    <section>
+        <div class="container">
+            <div class="row">
+                {% for post in posts %}
+                    <div class="card" style="width:18rem;">
+                    <img src="images/{{ post.image }}" alt="image de {{ post.title }}" class="image-article">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text"></p>
+                        <a href="{{ path('app_front_actu_detail', {id:post.id}) }}" class="btn btn-primary custom-btn">Voir plus</a>
+
+                    </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

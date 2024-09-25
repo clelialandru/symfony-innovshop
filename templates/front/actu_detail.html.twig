@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page liste des produits{% endblock %}
+
+{% block body %}
+    <main>
+
+        <section>
+            <div class="container">
+                <div class="row">
+
+
+                    <img src="{{ asset('images/'~post.image) }}" alt="image de {{ post.title }}"
+                         class="image-article">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ post.title }}</h1>
+                        <p class="card-text"></p>
+
+                    </div>
+
+
+                    <h2>Ajouter un commentaire</h2>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary" type="submit">Commenter</button>
+                    {{ form_end(form) }}
+                    <h2>Commentaires :</h2>
+
+                    {% for comment in post.comments %}
+                        <div class="">
+                            <small>By : {{ comment.author }}</small>
+                            <p>{{ comment.content }}</p>
+                            {% set nbLikes = 0 %}
+                            {% set nbDisLikes = 0 %}
+
+                            {% set userLike = 'NO_LIKE' %}
+
+                            {% for avi in comment.avis %}
+                                {% if avi.isLiked == 1 %}
+                                    {% set nbLikes =  nbLikes + 1 %}
+                                    {{ nbLikes }} likes
+                                {% else %}
+                                    {% set nbDisLikes = nbDisLikes + 1 %}
+                                    {{ nbDisLikes }} dislike
+                                {% endif %}
+                                {% if app.user and avi.user == app.user %}
+                                    {% if avi.isLiked == 1 %}
+                                        {% set userLike = 'LIKE' %}
+                                        <a href="{{ path('user_dislike', {id:comment.id}) }}" class="btn btn-primary" value="{% set userLike = 1 %}">👎</a>
+                                    {% elseif avi.isLiked == 0 %}
+                                        {% set userLike = 'DISLIKE' %}
+                                        <a href="{{ path('user_like', {id:comment.id}) }}" class="btn btn-primary" value="{% set userLike = 0 %}">👍</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if userLike == 'NO_LIKE' %}
+                                <a href="{{ path('user_like', {id:comment.id}) }}" class="btn btn-primary" value="{% set userLike = 1 %}">👍</a>
+                                <a href="{{ path('user_dislike', {id:comment.id}) }}" class="btn btn-primary" value="{% set userLike = 0 %}">👎</a>
+                            {% endif %}
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

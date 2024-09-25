@@ -1,0 +1,10 @@
+<aside style="float:right; border-left:3px solid black; padding-left:20px;">
+    <h3>Catégories d'article</h3>
+    <div>
+        {% for category in this.categories %}
+            <div>
+                <a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+</aside>
